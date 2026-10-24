@@ -1,0 +1,6 @@
+{
+  "name": "bingo-san-nicolas",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "python3 -m http.server 8000", "test": "node test.js" }
+}

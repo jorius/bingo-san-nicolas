@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#7b2d8e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bingo">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+<title>Bingo San Nicolás</title>
+</head>
+<body>
+<nav>
+  <button data-tab="cards">Cards</button>
+  <button data-tab="teams">Teams</button>
+  <button data-tab="play">Play</button>
+  <button data-tab="backup">Backup</button>
+</nav>
+<main>
+  <section id="cards" hidden>
+    <form id="card-form" autocomplete="off">
+      <div class="chips" id="color-pick"></div>
+      <div class="fields">
+        <label class="field">ID <input name="code" inputmode="numeric" maxlength="4" class="w6"></label>
+      </div>
+      <div class="board">
+        <div class="heads"><b>B</b><b>I</b><b>N</b><b>G</b><b>O</b></div>
+        <div class="grid entry" id="entry-grid"></div>
+      </div>
+      <p class="error" id="card-error" role="alert"></p>
+      <button class="primary" id="card-save">Save card</button>
+      <button type="button" id="card-cancel" hidden>Cancel edit</button>
+    </form>
+    <h2 id="card-count"></h2>
+    <div id="card-list"></div>
+  </section>
+
+  <section id="teams" hidden>
+    <form id="team-form" class="inline"><input name="team" placeholder="New team name" required><button class="primary">Add team</button></form>
+    <div id="team-list"></div>
+  </section>
+
+  <section id="play" hidden>
+    <div class="chips" id="round-color"></div>
+    <form id="call-form" class="inline call">
+      <input id="call" inputmode="numeric" maxlength="2" placeholder="#" aria-label="Called number">
+      <button class="primary">Call</button>
+    </form>
+    <p id="call-msg" class="callmsg" role="status"></p>
+    <p id="bingo" class="bingo" role="alert" hidden></p>
+    <div id="called" class="called"></div>
+    <div id="play-list" class="play-list"></div>
+  </section>
+
+  <section id="backup" hidden>
+    <p id="backup-info"></p>
+    <p class="muted">Everything is saved on this device only. Export a backup on the PC and import it on the phone and tablet.
+      On iPad, import <b>inside the installed app</b> (opened from the home screen), not in a Safari tab, because they keep separate storage.</p>
+    <p><button class="primary" id="export">Export backup</button>
+      <label class="button">Import backup<input type="file" id="import" accept=".json,application/json" hidden></label></p>
+    <p id="backup-msg" role="status"></p>
+  </section>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
