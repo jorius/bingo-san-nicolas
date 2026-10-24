@@ -24,7 +24,7 @@
     <form id="card-form" autocomplete="off">
       <div class="chips" id="color-pick"></div>
       <div class="fields">
-        <label class="field">ID <input name="code" inputmode="numeric" maxlength="6" class="w6"></label>
+        <label class="field">ID <input name="code" inputmode="numeric" enterkeyhint="next" maxlength="6" class="w6"></label>
       </div>
       <div class="board">
         <div class="heads"><b>B</b><b>I</b><b>N</b><b>G</b><b>O</b></div>
@@ -46,7 +46,7 @@
   <section id="play" hidden>
     <div class="chips" id="round-color"></div>
     <form id="call-form" class="inline call">
-      <input id="call" inputmode="numeric" maxlength="2" placeholder="#" aria-label="Called number">
+      <input id="call" inputmode="numeric" enterkeyhint="go" maxlength="2" placeholder="#" aria-label="Called number">
       <button class="primary">Call</button>
     </form>
     <p id="call-msg" class="callmsg" role="status"></p>

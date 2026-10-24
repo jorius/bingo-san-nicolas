@@ -35,7 +35,7 @@ input, select { font: inherit; padding: 10px; border: 1px solid var(--line); bor
 .heads { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; text-align: center; font-size: 20px; margin-bottom: 4px; }
 .grid { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(5, auto); grid-auto-flow: column; gap: 4px; }
 .entry input { width: 100%; text-align: center; font-size: 22px; padding: 10px 0; }
-.entry input.bad { border-color: var(--bad); background: #fee2e2; }
+input.bad { border-color: var(--bad); background: #fee2e2; }
 .free { display: grid; place-items: center; color: #9d4b73; font-size: 24px; }
 .error { color: var(--bad); min-height: 1.4em; font-weight: 600; }
 

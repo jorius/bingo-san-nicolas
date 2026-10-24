@@ -47,7 +47,7 @@ let editing = null;
 $('#color-pick').innerHTML = chips('radio');
 for (let i = 0; i < 25; i++) {
   grid.insertAdjacentHTML('beforeend', i === FREE ? '<div class="free">♥</div>'
-    : `<input inputmode="numeric" maxlength="2" data-i="${i}" aria-label="${'BINGO'[i / 5 | 0]} row ${i % 5 + 1}">`);
+    : `<input inputmode="numeric" enterkeyhint="next" maxlength="2" data-i="${i}" aria-label="${'BINGO'[i / 5 | 0]} row ${i % 5 + 1}">`);
 }
 const cells = [...grid.querySelectorAll('input')]; // DOM order is column-major, same as entry order
 
@@ -66,11 +66,25 @@ grid.addEventListener('input', e => {
   el.classList.remove('bad');
   if (el.value && shouldAdvance(el.value, el.dataset.i / 5 | 0)) next(el);
 });
+const MOVES = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] };
 grid.addEventListener('keydown', e => {
   const el = e.target;
   if (e.key === 'Enter') { e.preventDefault(); next(el); }
   else if (e.key === 'Backspace' && !el.value) { e.preventDefault(); cells[cells.indexOf(el) - 1]?.focus(); }
+  else if (MOVES[e.key]) {
+    e.preventDefault();
+    const [dc, dr] = MOVES[e.key];
+    let i = +el.dataset.i;
+    do { // step over the free heart; stop at the edges
+      const c = (i / 5 | 0) + dc, r = i % 5 + dr;
+      if (c < 0 || c > 4 || r < 0 || r > 4) return;
+      i = c * 5 + r;
+    } while (i === FREE);
+    grid.querySelector(`[data-i="${i}"]`).focus();
+  }
 });
+// Select on focus so typing over a filled cell replaces it.
+grid.addEventListener('focusin', e => e.target.select());
 grid.addEventListener('change', e => checkCell(e.target));
 f.code.addEventListener('input', e => {
   e.target.value = e.target.value.replace(/\D/g, '');
@@ -79,10 +93,22 @@ f.code.addEventListener('input', e => {
 // IDs shorter than 6 digits: Enter jumps to the grid instead of submitting.
 f.code.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); cells[0].focus(); } });
 
+// Warn about a repeated ID as soon as the field is left, not only on save.
+function checkDup() {
+  const dup = state.cards.some(c => c !== editing && c.color === f.color.value && c.code === f.code.value);
+  const err = $('#card-error');
+  f.code.classList.toggle('bad', dup);
+  if (dup) err.textContent = `${COLORS[f.color.value]} ${f.code.value} is already entered`;
+  else if (err.textContent.endsWith('is already entered')) err.textContent = '';
+}
+f.code.addEventListener('blur', checkDup);
+$('#color-pick').addEventListener('change', checkDup);
+
 function resetForm(focus) {
   editing = null;
   cells.forEach(el => { el.value = ''; el.classList.remove('bad'); });
   f.code.value = '';
+  f.code.classList.remove('bad');
   $('#card-error').textContent = '';
   $('#card-cancel').hidden = true;
   $('#card-save').textContent = 'Save card';
@@ -91,6 +117,7 @@ function resetForm(focus) {
 function edit(card) {
   editing = card;
   f.code.value = card.code;
+  f.code.classList.remove('bad');
   f.color.value = card.color;
   cells.forEach(el => { el.value = card.nums[el.dataset.i]; el.classList.remove('bad'); });
   $('#card-error').textContent = '';
