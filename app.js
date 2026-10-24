@@ -74,8 +74,10 @@ grid.addEventListener('keydown', e => {
 grid.addEventListener('change', e => checkCell(e.target));
 f.code.addEventListener('input', e => {
   e.target.value = e.target.value.replace(/\D/g, '');
-  if (e.target.value.length === 4) cells[0].focus();
+  if (e.target.value.length === 6) cells[0].focus();
 });
+// IDs shorter than 6 digits: Enter jumps to the grid instead of submitting.
+f.code.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); cells[0].focus(); } });
 
 function resetForm(focus) {
   editing = null;

@@ -17,7 +17,10 @@ assert.match(cardError(with_({}, 1, 5), []), /twice/);
 assert.match(cardError(with_({}, 3, NaN), []), /Missing/);
 assert.match(cardError(with_({}), [card]), /Pink 4307/);
 assert.equal(cardError(with_({ color: 'blue' }), [card]), null);
-assert.match(cardError(with_({ code: 4307 }), []), /4 digits/);
+assert.match(cardError(with_({ code: 4307 }), []), /6 digits/);
+assert.equal(cardError(with_({ code: '123456' }), []), null);
+assert.match(cardError(with_({ code: '1234567' }), []), /6 digits/);
+assert.match(cardError(with_({ code: '' }), []), /6 digits/);
 
 assert.equal(remaining(card, []), 24);
 assert.equal(remaining(card, [5, 8, 99]), 22);

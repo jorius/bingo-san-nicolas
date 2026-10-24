@@ -25,7 +25,7 @@ export function clashes(cards) {
 
 export function cardError(card, others) {
   if (!COLORS[card.color]) return 'Pick the card color';
-  if (typeof card.code !== 'string' || !/^\d{4}$/.test(card.code)) return 'ID must be 4 digits';
+  if (typeof card.code !== 'string' || !/^\d{1,6}$/.test(card.code)) return 'ID must be up to 6 digits';
   if (others.some(c => c.color === card.color && c.code === card.code)) return `${COLORS[card.color]} ${card.code} is already entered`;
   if (!Array.isArray(card.nums) || card.nums.length !== 25) return 'A card has 24 numbers';
   const seen = new Set();
